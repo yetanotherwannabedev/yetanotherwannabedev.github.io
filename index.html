@@ -1,0 +1,145 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <title>reveal.js</title>
+        <link rel="stylesheet" href="css/reveal.css">
+        <link rel="stylesheet" href="css/theme/night.css">
+        <!-- Theme used for syntax highlighting of code -->
+        <link rel="stylesheet" href="lib/css/zenburn.css">
+        <!-- Printing and PDF exports -->
+        <script>
+            var link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+            document.getElementsByTagName('head')[0].appendChild(link);
+        </script>
+    </head>
+    <body>
+        <div class="reveal">
+            <div class="slides">
+
+                <!-- 1 -->
+                <section>
+                    <section>
+                        <h2>Java8 &lodash.js</h2>
+                        <h4>na co komu streamy potrzebne</h4>
+                    </section>
+                </section>
+
+                <!-- 2 -->
+                <section>
+                    <section>
+                        <a href="https://pl.wikipedia.org/wiki/Java">Java 8</a>
+                    </section>
+                    <section>
+                        <a href="https://lodash.com/">lodash.js</a>
+                    </section>
+                </section>
+
+                <!-- 3 -->
+                <section>
+                    <section>
+                        <h3>lambda</h3>
+                        <pre>
+                            <code class="java hljs" data-trim>
+                            parameter -> expression body
+                            </code>
+                            <code class="java hljs" data-trim>
+                            Shape rectangle = (int height, int base) -> height * base;
+
+                            Shape triangle = (height, base) -> {
+                                return height * base /2;
+                            };
+
+                            int calculateArea (int height, int base, Shape shape) {
+                                return shape.calculate(height, base);
+                            }
+
+                            interface Shape {
+                                int calculate(int a, int b);
+                            }
+
+                            int rectangleArea = calculateArea (height, base, rectangle);
+                            </code>
+                        </pre>
+                    </section>
+                    <section>
+                        <h3>js</h3>
+                        <pre>
+                            <code class="java hljs" data-trim>
+                            ref = function (params) {body};
+                            </code>
+                            <code class="java hljs" data-trim>
+                            rectangle = function (height, base) {return height * base;};
+
+                            triangle = function (height, base) {return height * base /2;};
+
+                            function calculateArea (height, base, shape) {
+                                return shape(height, base);
+                            }
+
+                            triangleArea = calculateArea (height, base, triangle);
+
+                            rectangleArea = calculateArea (height, base, rectangle);
+                            </code>
+                        </pre>
+                    </section>
+                </section>
+
+                <!-- 4 -->
+                <section>
+                    <section>
+                    <h3>Method reference</h3>
+                        <pre>
+                            <code class="java" data-trim>
+                            //given
+                            List rectangles;
+
+                            void calculateArea (Rectangle rectangle) {
+                                System.out.println (
+                                rectangle.getBase() * rectangle.getHeight());
+                                }
+                            
+                            rectagnles.forEach(this::calculateArea);
+                                </code>
+                        </pre>
+                    </section>
+                    <section>
+                        <pre>
+                            <code class="javascript" data-trim>function () {}</code>
+                        </pre>
+                    </section>
+                </section>
+
+
+            </div>
+        </div>
+        <script src="lib/js/head.min.js"></script>
+        <script src="js/reveal.js"></script>
+        <script>
+            // More info https://github.com/hakimel/reveal.js#configuration
+            Reveal.initialize({
+                history: true,
+
+                // More info https://github.com/hakimel/reveal.js#dependencies
+                dependencies: [{
+                    src: 'plugin/markdown/marked.js'
+                }, {
+                    src: 'plugin/markdown/markdown.js'
+                }, {
+                    src: 'plugin/notes/notes.js',
+                    async: true
+                }, {
+                    src: 'plugin/highlight/highlight.js',
+                    async: true,
+                    callback: function() {
+                        hljs.initHighlightingOnLoad();
+                    }
+                }]
+            });
+        </script>
+    </body>
+</html>
