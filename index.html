@@ -32,7 +32,7 @@
                 <!-- 2 -->
                 <section>
                     <section>
-                        <a href="https://pl.wikipedia.org/wiki/Java">Java 8</a>
+                        <a href="http://www.oracle.com/technetwork/articles/java/ma14-java-se-8-streams-2177646.html">Java 8</a>
                     </section>
                     <section>
                         <a href="https://lodash.com/">lodash.js</a>
@@ -92,7 +92,7 @@
                 <!-- 4 -->
                 <section>
                     <section>
-                    <h3>Method reference</h3>
+                    <h3>method reference</h3>
                         <pre>
                             <code class="java" data-trim>
                             //given
@@ -107,9 +107,256 @@
                                 </code>
                         </pre>
                     </section>
+                </section>
+
+                <!-- 5 -->
+                <section>
                     <section>
+                    <h3> stream </h3>
                         <pre>
-                            <code class="javascript" data-trim>function () {}</code>
+                            <code class="java" data-trim>
+                            //given
+                            List rectangles;
+
+                            private int calculateArea (Rectangle rectangle) {
+                                return rectangle.getBase() * rectangle.getHeight();
+                                }
+
+                            List rectangleAreas = rectagnles.stream()
+                                                            .map(this::calculateArea)
+                                                            .collect(Collectors.toList());
+                                </code>
+                        </pre>
+                 </section>
+                         <section>
+                            <h3> lodash.js </h3>
+                                <pre>
+                                    <code class="java" data-trim>
+                                    //given
+                                    rectangles = [
+                                        {base: 3, height: 4},
+                                        {base: 4, height: 6}];
+
+                                    function calculateArea (rectangle) {
+                                        return rectangle.base  * rectangle.height;
+                                        }
+
+                                    rectangleAreas = _.map(rectangles, calculateArea);
+                                        </code>
+                                </pre>
+                         </section>
+                     </section>
+
+                <!-- 6 -->
+                <section>
+                    <section>
+                    <h3>java8</h3>
+                        <pre>
+                            <code class="java" data-trim>
+                            //given
+                            List unfilteredStuffs;
+
+                            List filteredList = unfilteredStuffs.stream().
+                                                filter(someStuff ->
+                                                DIRTY_STUFF.equals(someStuff.getType))
+                                                .collect(Collectors.toList());
+                            </code>
+                        </pre>
+                    </section>
+                    <section>
+                    <h3>lodash.js</h3>
+                        <pre>
+                            <code class="java" data-trim>
+                            //given
+                            unfilteredStuffs = [
+                                {'type':'article','active':true, 'thirdParam': 'blah'},
+                                {'type':'photo','active':false, 'thirdParam': 'meh'}
+                            ];
+
+                            _.filter(unfilteredStuffs, function (param) {
+                                    return param.active;
+                            });
+                            _.filter(unfilteredStuffs,
+                                {'type':'article', 'thirdParam':'meh'});
+                            _.filter(unfilteredStuffs, ['type':'article']);
+                            _.filter(unfilteredStuffs, 'active');
+                            </code>
+                        </pre>
+                    </section>
+                </section>
+
+                <!-- 7 -->
+                <section>
+                    <section>
+                    <h3>java8</h3>
+                        <pre>
+                            <code class="java" data-trim>
+                            //given
+                            List unsortedContent;
+
+                            unsortedContent.stream()
+                                .sorted((c1, c2) ->
+                                        c1.getProperty().compareTo(c2.getProperty()))
+                                .collect(Collectors.toList());
+
+                            unsortedContent.stream()
+                                .sorted((c1, c2) ->
+                                        Integer.compare(c1.getNumber(), c2::getNumber
+                                .collect(Collectors.toList());
+                            </code>
+                        </pre>
+                    </section>
+                    <section>
+                    <h3>lodash.js</h3>
+                        <pre>
+                            <code class="java" data-trim>
+                            //given
+                            unsortedContent = [
+                                {'type':'article','active':true, 'views': 20},
+                                {'type':'photo','active':false, 'views': 31},
+                                {'type':'photo','active':true, 'views': 18}
+                            ];
+
+                            _.sortBy(unsortedContent, function (obj){return obj.views});
+                            //[['photo',true,18],['article',true,20],['photo',false,31]]
+
+                            _.sortBy(unsortedContent, ['active','views']);
+                            </code>
+                        </pre>
+                    </section>
+                </section>
+
+                <!-- 8 -->
+                <section>
+                    <section>
+                    <h3>java8</h3>
+                        <pre>
+                            <code class="java" data-trim>
+                            //given
+                            List objs;
+
+                            objs.stream()
+                                .collect(Collectors.toMap(obj::getId, Function.identity()));
+
+                            objs.stream()
+                                .collect(Collectors.toMap(obj::getId, x->x));
+                            
+                            </code>
+                        </pre>
+                    </section>
+                    <section>
+                    <h3>lodash.js</h3>
+                        <pre>
+                            <code class="java" data-trim>
+                            //given
+                            listedContent = [
+                                {'type':'article','active':true, 'id': 20},
+                                {'type':'photo','active':false, 'id': 31},
+                                {'type':'photo','active':true, 'id': 18}
+                            ];
+
+                            _.keyBy(listedContent, function(o){o.id})
+                            //{20 : {'type':'article','active':true, 'id': 20},
+                            //31 :{'type':'photo','active':false, 'id': 31},
+                            //18 : {'type':'photo','active':true, 'id': 18}}
+                            </code>
+                        </pre>
+                    </section>
+                </section>
+
+                <!-- 9 -->
+                <section>
+                    <section>
+                    <h3>java8</h3>
+                        <pre>
+                            <code class="java" data-trim>
+                            //given
+                            List ids;
+                            private Optional<> getById(Long id){
+                                    return Optional.of(db.query(id));
+                            }
+                            //then
+                            ids.stream()
+                                .map(this::getById)
+                                .filter(Optional::isPresent)
+                                .map(Optional::get)
+                                .collect(Collectors.toList());
+                            </code>
+                        </pre>
+                    </section>
+                    <section>
+                    <h3>lodash.js</h3>
+                        <pre>
+                            <code class="java" data-trim>
+                            //given
+                            NO IDEA!!!
+                            </code>
+                        </pre>
+                    </section>
+                </section>
+
+                <!-- 10 -->
+                <section>
+                    <section>
+                    <h3>java8</h3>
+                        <pre>
+                            <code class="java" data-trim>
+                            //given
+                            List rectangles;
+                            </code>
+                        </pre>
+                    </section>
+                    <section>
+                    <h3>lodash.js</h3>
+                        <pre>
+                            <code class="java" data-trim>
+                            //given
+                            List rectangles;
+                            </code>
+                        </pre>
+                    </section>
+                </section>
+
+                <!-- 11 -->
+                <section>
+                    <section>
+                    <h3>java8</h3>
+                        <pre>
+                            <code class="java" data-trim>
+                            //given
+                            List rectangles;
+                            </code>
+                        </pre>
+                    </section>
+                    <section>
+                    <h3>lodash.js</h3>
+                        <pre>
+                            <code class="java" data-trim>
+                            //given
+                            List rectangles;
+                            </code>
+                        </pre>
+                    </section>
+                </section>
+
+                <!-- 12 -->
+                <section>
+                    <section>
+                    <h3>java8</h3>
+                        <pre>
+                            <code class="java" data-trim>
+                            //given
+                            List rectangles;
+                            </code>
+                        </pre>
+                    </section>
+                    <section>
+                    <h3>lodash.js</h3>
+                        <pre>
+                            <code class="java" data-trim>
+                            //given
+                            List rectangles;
+                            </code>
                         </pre>
                     </section>
                 </section>
