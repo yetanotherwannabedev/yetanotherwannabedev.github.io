@@ -9,7 +9,7 @@
  * For other themes, change $codeBackground accordingly.
  *
  */
-@import "_noInternet/Open_Sans_italic";
+@import url(_noInternet/Open_Sans_italic.css);
 /*********************************************
  * GLOBAL STYLES
  *********************************************/
