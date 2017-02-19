@@ -311,7 +311,13 @@
                         <pre>
                             <code class='java' data-trim>
                             //given
-                            TBC!!!
+                            ids = [1, 2, 3];
+                            
+                            getById = function(id){
+                                    return db.query(id);
+                            }
+
+                            _.filter(_.map(ids, getById), _.identity(value))
                             </code>
                         </pre>
                     </section>
@@ -324,7 +330,18 @@
                         <pre>
                             <code class='java' data-trim>
                             //given
-                            TBC...
+                            ids = [1, 2, 3, 2, 1, 4, 6];
+                            
+                            Optional<> getById(Long id){
+                                    return Optional.of(db.query(id));
+                            }
+
+                            ids.stream()
+                               .distinct()
+                               .map(this::getById)
+                               .filter(Optional::isPresent)
+                               .map(Optional::get)
+                               .collect(Collectors.toList());
                             </code>
                         </pre>
                     </section>
@@ -333,7 +350,13 @@
                         <pre>
                             <code class='java' data-trim>
                             //given
-                            TBC...
+                            ids = [1, 2, 3, 2, 1, 4, 6];
+                            
+                            getById = function(id){
+                                    return db.query(id);
+                            }
+
+                            _.filter(_.map(_.uniq(ids), getById), _.identity(value))
                             </code>
                         </pre>
                     </section>
