@@ -356,7 +356,11 @@
                                     return db.query(id);
                             }
 
-                            _.filter(_.map(_.uniq(ids), getById), _.identity(value))
+                            _.chain(ids)
+                             .uniq()
+                             .map(getById)
+                             .filter(_.identity())
+                             .value()
                             </code>
                         </pre>
                     </section>
