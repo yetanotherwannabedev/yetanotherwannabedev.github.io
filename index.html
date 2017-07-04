@@ -20,385 +20,664 @@
     <body>
         <div class='reveal'>
             <div class='slides'>
-
-                <!-- 1 -->
+                <!-- INTRO -->
                 <section>
                     <section>
-                        <h2>Java8 &lodash.js</h2>
-                        <h4>na co komu streamy potrzebne</h4>
+                        <h2>JavaScript z lukrową polewą</h2>
+                        <h4>Say hello to TypeScript</h4>
                         <h7>Krzysztof Cywiński</h7>
-
                     </section>
                 </section>
-
-                <!-- 2 -->
+                <!-- SUBINTRO -->
                 <section>
                     <section>
-                        <a href='http://www.oracle.com/technetwork/articles/java/ma14-java-se-8-streams-2177646.html'>Java 8</a>
-                    </section>
-                    <section>
-                        <a href='https://lodash.com/'>lodash.js</a>
+                        <p>
+                            <img class='header-logo' src=imgs/js-logo.png></img>
+                            <img class='header-logo' src=imgs/ts-logo.png></img>
+                        </p>
+                        <p>
+                            From <span class='highlight'>ES5 </span>
+                            through <span class='highlight'>ES2015 </span>
+                            to <span class='highlight'>TypeScript </span>
+                        </p>
                     </section>
                 </section>
-
-                <!-- 3 -->
+                <!-- ES5 -->
                 <section>
                     <section>
-                        <h3>functional interface</h3>
-                        <pre>
-                            <code class='java hljs' data-trim>
-                                    Interfaces:
-
-                                    consumer 
-                                              takes args, gives back nothing
-
-                                    supplier 
-                                              takes nothig, gives values back
-
-                                    predicate 
-                                              takes args, gives Boolean back
-
-                                    function 
-                                              takes args, gives values back
-                            </code>
-                        </pre>
+                        <h2 class='highlight-js'>ES5</h2>
                     </section>
                     <section>
-                        <h3>lambda</h3>
+                        <h3>HOISTING</h3>
                         <pre>
-                            <code class='java hljs' data-trim>
-                            parameter -> expression body
-                            </code>
-                            <code class='java hljs' data-trim>
-                            Shape rectangle = (int height, int base) -> height * base;
-
-                            Shape triangle = (height, base) -> {
-                                return height * base /2;
+                            <code class='javascript hljs' data-trim>
+                            var myFunction = function() {
+                                console.log(insideVar); // undefined
+                                var insideVar = 'insider';
+                                console.log(insideVar); // 'insider'
                             };
-
-                            int calculateArea(int height, int base, Shape shape) {
-                                return shape.calculate(height, base);
-                            }
-
-                            interface Shape {
-                                int calculate(int a, int b);
-                            }
-
-                            int rectangleArea = calculateArea(height, base, rectangle);
+                            myFunction();
+                            </code>
+                        </pre>
+                        <p>Following code is the same as above</p>
+                        <pre>
+                            <code class='javascript hljs' data-trim>
+                            var myFunction = function() {
+                                var insideVar;
+                                console.log(insideVar); // undefined
+                                insideVar = 'insider';
+                                console.log(insideVar); // 'insider'
+                            };
+                            myFunction();
                             </code>
                         </pre>
                     </section>
                     <section>
-                        <h3>js</h3>
+                        <h3>OBJECT LITERALS</h3>
                         <pre>
-                            <code class='java hljs' data-trim>
-                            ref = function(params) {body};
-                            </code>
-                            <code class='java hljs' data-trim>
-                            var rectangle = function(height, base) {
-                                return height * base;
+                            <code class='javascript hljs' data-trim>
+                            var emptyObject = {},
+                                object = {
+                                    param1 : 'I am param1',
+                                    param2 : 'I am param2'
                             };
-
-                            function calculateArea(height, base, shape) {
-                                return shape(height, base);
-                            }
-
-                            rectangleArea = calculateArea(height, base, rectangle);
+                                
                             </code>
+                        </pre>
+                    </section>
+                    <section>
+                        <h3>FUNCTION LITERALS</h3>
+                        <pre>
+                            <code class='javascript hljs' data-trim>
+                            var myFunction = function() {
+                                    console.log('I am a ...');
+                                },
+                                myObject = {
+                                    sayYourName: function() {
+                                        console.log('I am a ...');
+                                }
+                            };
+                            </code>
+                        </pre>
+                    </section>
+                    <section>
+                        <h3>SCOPE</h3>
+                        <pre>
+                            <code class='javascript hljs' data-trim>
+                            // Scope 1
+                            var fn1 = function() {
+                                // Scope 2
+                                var fn2 = function() {
+                                    // Scope 3
+                                };
+                            };
+                            </code>
+                        </pre>
+                    </section>
+                    <section>
+                        <h3>SCOPE - example</h3>
+                        <pre>
+                            <code class='javascript hljs' data-trim>
+                            var a = 'a',
+                                b = 'b',
+                                fn = function() {
+                                    var b = 'be',
+                                        c = 'c';
+                                    // a = 'a', b = 'be', c = 'c'
+                                };
+                            // a = 'a', b = 'b', c = undefined
+                            fn();
+                            // a = 'a', b = 'be', c = undefined
+                            </code>
+                        </pre>
+                    </section>
+                    <section>
+                        <h3>CLOSURE</h3>
+                        <pre>
+                            <code class='javascript hljs' data-trim>
+                            var factory = function(param) {
+                                    var greeting = 'Hello my name is ';
+                                    return {
+                                       sayHi: function() {
+                                           return greeting + param;
+                                       }
+                                    };
+                                },
+                                johnExample = factory('John');
+                            johnExample.sayHi(); // 'Hello my name is John'
+                            </code>
+                        </pre>
+                    </section>
+                    <section>
+                        <h3>IIFE</h3>
+                        <pre>
+                            <code class='javascript hljs' data-trim>
+                            var i = 'john',
+                                johnExample = (function(name) {
+                                    var greeting = 'Hello my name is John Example';
+                                    return {
+                                       sayHi: function() {
+                                           return greeting;
+                                       }
+                                    };
+                                })(i);
+                            i = 'Joohnhy';
+                            johnExample.sayHi(); // 'Hello my name is John Example'
+                            </code>
+                        </pre>
+                    </section>
+                    <section>
+                       <h3>CLOSURE vs IIFE</h3>
+                        <pre>
+                            <code class='javascript hljs' data-trim>
+                            var name = 'John',
+                                factory = function(param) {
+                                    var greeting = 'Hello my name is ';
+                                    return {
+                                       sayHi: function() {
+                                           return greeting + param;
+                                       }
+                                    };
+                                };
+                            name = 'Johnny';
+                            johnExample = factory(name);
+                            johnExample.sayHi(); // Hello my name is Johnny
+                            </code>
+                            <code class='javascript hljs' data-trim>
+                            var name = 'John',
+                                johnExample = (function(param) {
+                                    var greeting = 'Hello my name is ';
+                                    return {
+                                       sayHi: function() {
+                                           return greeting + param;
+                                       }
+                                    };
+                                })(name);
+                            name = 'Johnny';
+                            johnExample.sayHi(); // Hello my name is John
+                            </code>
+                        </pre>
+                    </section>
+                    <section>
+                        <h3>CONSTRUCTOR FUNCTION</h3>
+                        <pre>
+                            <code class='javascript hljs' data-trim>
+                            var Person = function() {
+                                    this.firstName = 'John';
+                                    this.lastName = 'Example';
+                                },
+                                johnExample;
+
+                             Person.prototype.sayHi = function() {
+                                 return 'Hi, I am ' + this.firstName + ' ' + this.lastName;
+                             };
+
+                             johnExample = new Person();
+                             johnExample.sayHi(); // 'Hi, I am John Example'
+                             </code>
                         </pre>
                     </section>
                 </section>
-
-                <!-- 4 -->
+                <!-- ES2015 -->
                 <section>
                     <section>
-                    <h3>method reference</h3>
+                        <h2 class='highlight-js'>ES2015 a.k.a. ES6</h2>
+                    </section>
+                    <section>
+                        <h3>LET</h3>
+                        <p>Block level scope</p>
                         <pre>
-                            <code class='java' data-trim>
-                            //given
-                            List rectangles = [Rectangle r1, Rectangle r2];
+                            <code class='javascript hljs' data-trim>
+                            let someGuysName = 'John',
+                                fn = (function() {
+                                    let someGuysName = 'Johnny';
+                                })();
 
-                            void calculateArea(Rectangle rectangle) {
-                                System.out.println(
-                                    rectangle.getBase() * rectangle.getHeight()
-                                );
+                            console.log(someGuysName); // 'John'
+                            </code>
+                        </pre>
+                        <p>Is not hoisted</p>
+                        <pre>
+                           <code class='javascript hljs' data-trim>
+                           console.log(ex); // ReferenceError: ex is not defined
+                           let ex = 'example';
+                           console.log(ex); 'example'
+                           </code>
+                        </pre>
+                    </section>
+                     <section>
+                        <h3>CONST</h3>
+                        <p>Block level scope</p>
+                        <pre>
+                            <code class='javascript hljs' data-trim>
+                            const someGuysName = 'John',
+                                fn = (function() {
+                                    const someGuysName = 'Johnny';
+                                })();
+                            console.log(someGuysName); // 'John'
+                            </code>
+                        </pre>
+                        <p>Is not hoisted</p>
+                        <pre>
+                           <code class='javascript hljs' data-trim>
+                           console.log(ex); // ReferenceError: ex is not defined
+                           let ex = 'example';
+                           console.log(ex); 'example'
+                           </code>
+                        </pre>
+                        <p>Immutable after craetion</p>
+                        <pre>
+                           <code class='javascript hljs' data-trim>
+                           const ex = 'example';
+                           ex = 'new example' // TypeError: Assignment to constant variable.
+                           </code>
+                        </pre>
+                    </section>
+                    <section>
+                        <h3>CLASS</h3>
+                        <p>Syntactic sugar</p>
+                        <p>Is not hoisted</p>
+                        <pre>
+                            <code class='javascript hljs' data-trim>
+                            class Person {
+                                constructor() {
+                                    this.name = 'John';
+                                }
+                            };
+                            let person = new Person();
+                            console.log(person.name); // 'John'
+                            </code>
+                        </pre>
+                        <p>is equivalent for</p>
+                        <pre>
+                           <code class='javascript hljs' data-trim>
+                           var Person = (function() {
+                                   function Person() {
+                                       this.name = 'John';
+                                   }
+                                   return Person;
+                           }());
+                           var person = new Person();
+                           console.log(person.name); // 'John'
+                           </code>
+                        </pre>
+                    </section>
+                     <section>
+                        <h3>CLASS : extends</h3>
+                        <pre>
+                           <code class='javascript hljs' data-trim>
+                            class Example {
+                                constructor() {
+                                    this.lastName = 'Example';
+                                }
+                            };
+                            class John extends Example {
+                                constructor() {
+                                    super();
+                                    this.firstName = "John";
+                                }
+                            };
+                            person = new John();
+                            console.log(person.firstName); // 'John'
+                            console.log(person.lastName); // 'Example'
+                           </code>
+                        </pre>
+                    </section>
+                    <section>
+                        <h3>CLASS : getters setters</h3>
+                        <pre>
+                            <code class='javascript hljs' data-trim>
+                            class Person {
+                                 constructor(firstName) {
+                                     this._firstName = firstName;
+                                 }
+                                 get firstName() {
+                                     return this._firstName.toUpperCase();
+                                 }
+                                 set firstName(firstName) {
+                                     if (firstName) {
+                                         this._firstName = firstName;
+                                     }
+                                 }
                             }
+                           </code>
+                           <code class='javascript hljs' data-trim>
+                            john = new Person('john');
+                            console.log(john.firstName); // 'JOHN'
+                            john.firstName = '';
+                            console.log(john.firstName); // 'JOHN'
+                            john.firstName = 'johnny';
+                            console.log(john.firstName); // 'JOHNNY'
+                           </code>
+                        </pre>
+                        <p>and more...</p>
+                    </section>
+                    <section>
+                        <h3> more</h3>
+                        <p>static functions</p>
+                        <p>string interpolation</p>
+                        <p>fat arrow function</p>
+                        <p>iterator</p>
+                        <p>new array operators like spread etc.</p>
+                        <p>advanced types like set, map, weakSet, weakMap promise, proxy</p>
+                        <p>modules</p>
+                    </section>
+                </section>
+                <!-- ES5 -->
+                <section>
+                    <section>
+                        <h2 class='highlight-ts'>TypeScript</h2>
+                    </section>
+                    <section>
+                        <h3>Intro</h3>
+                        <p>TypeScript is a <span class=highlight-ts> typed superset </span> of JavaScript that <span class=highlight-ts> compiles </span> to plain JavaScript</p>
+                        <p>Invented by Microsoft</p>
+                        <span class=highlight-ts> Valid JavaScript code is valid TypeScript code </span>
+                    </section>
+                    <section>
+                        <h3>Benefits</h3>
+                        <p>Fills out the feature gap <small>Anders Hejlsberg</small></p>
+                    </section>
+                    <section>
+                        <h3>Live demo</h3>
+                        <p>Type checker</p>
+                        <p>New Type</p>
+                        <p>NPE and Undefined solution!oneoneone</p>
+                        <p>OOP... seriously man?</p>
+                        <h3>comming up soon</h3>
+                        <p>if(isIntenet){ statement completion }</p>
+                        <p>pstryczek into MSs nose</p>
+                    </section>
+                    <section>
+                        <h3>Thanks for your attention</h3>
+                        <p>see you on the part 2</p>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                    <h2>JavaScript z lukrową polewą</h2>
+                        <h4>TypeScript design patterns</h4>
+                        <h7>Krzysztof Cywiński</h7>
+                    </section>
+                    <section>
+                        <h3>OOP design pattern</h3>
+                        <p> yawn... </p>
+                    </section>
+                    <section>
+                        <h3>OOP design pattern</h3>
+                        <p> Factory </p>
+                        <p> Abstract Factory </p>
+                        <p> Builder </p>
+                        <p> Singleton </p>
+                    </section>
+                    <section>
+                        <p> Composite Pattern </p>
+                        <p> Decorator Pattern </p>
+                        <p> Adapter Patterm </p>
+                        <p> Fasade Pattern </p>
+                        <p> Proxy Pattern </p>
+                        <p> Command Pattern </p>
+                        <p> Mediator Pattern </p>
+                    </section>
+                    <section>
+                        <p> Strategy Pattern </p>
+                        <p> State Pattern </p>
+                        <p> Template Pattern </p>
+                        <p class='highlight'> Observer Pattern </p>
+                        <p> Visitor Pattern </p>
+                    </section>
+                    <section>
+                        <h3> Promises (ES6) </h3>
+                        <img class='image' src='imgs/promises.png'> </img>
+                    </section>
+                    <section>
+                        <h3> Promise-based web architecture </h3>
+                        <pre>
+                            <code class='javascript hljs' data-trim>
+                                function process(callback) {
+                                    stepOne((error, resultOne) => {
+                                        if (error) {
+                                            callback(error);
+                                            return;
+                                        }
+                                        stepTwo(resultOne, (error, resultTwo) => {
+                                            if (error) {
+                                                callback(error);
+                                                return;
+                                            }
+                                            callback(undefined, resultTwo + 1);
+                                        });
+                                    });
+                                }
+                            </code>
+                        </pre>
+                    </section>
+                    <section>
+                        <h3> Promise-based web architecture </h3>
+                        <pre>
+                            <code class='javascript hljs' data-trim>
+                                function process() {
+                                     return stepOne()
+                                         .then(result => stepTwo(result))
+                                         .then(result => result + 1);
+                                }
+                            </code>
+                        </pre>
+                        <p>Watch out! JQuery 3.0 released in June 2016 was first version compliant with ES2015 spec</p>
+                    </section>
+                    <section>
+                        <h3> How to </h3>
+                        <p> promisfy existing modules or libs(1) </p>
+                        <pre>
+                            <code class='javascript hljs' data-trim>
+                import * as FS from 'fs';
+                
+                FS.readFile('some-file.txt', 'utf-8', (error, text) => {
+                    if (error) {
+                        console.error(error);
+                        return;
+                    }
+                    console.log('Content:', text);
+                });
+                            </code>
+                        </pre>
+                    </section>
+                    <section>
+                        <h3> How to </h3>
+                        <p> promisfy existing modules or libs(2) </p>
+                        <pre>
+                            <code class='javascript hljs' data-trim>
+                  function readFile(path: string, options: any): Promise<string> {
+                       return new Promise((resolve, reject) => {
+                           FS.readFile(path, options, (error, result) => {
+                               if (error) {
+                                   reject(error);
+                               } else {
+                                   resolve(result);
+                               }
+                           });
+                       });
+                  }
+                            </code>
+                        </pre>
+                    </section>
+                    <section>
+                        <h3> How to </h3>
+                        <p> promisfy existing modules or libs(3) </p>
+                        <pre>
+                            <code class='javascript hljs' data-trim>
+                      FS.readFile('some-file.txt', 'utf-8')
+                        .then(text => {
+                            console.log('Content:', text);
+                         })
+                        .catch(reason => {
+                            Console.error(reason);
+                         });
+                            </code>
+                        </pre>
+                    </section>
+                    <section>
+                        <h3>Modules</h3>
+                        <p>example(1)</p>
+                        <pre>
+Validator.ts
+                            <code class='javascript hljs' data-trim>
+                            export interface Validator {
+                               isValid(s: string): boolean;
+                            }
+                            </code>
+LettersValidator.ts
+                            <code class='javascript hljs' data-trim>
+                            import { Validator } from "./Validator";
                             
-                            rectagnles.forEach(this::calculateArea);
-                                </code>
-                        </pre>
-                    </section>
-                </section>
-
-                <!-- 5 -->
-                <section>
-                    <section>
-                    <h3> stream </h3>
-                        <pre>
-                            <code class='java' data-trim>
-                            //given
-                            List rectangles = [Rectangle r1, Rectangle r2];
-
-                            private int calculateArea(Rectangle rectangle) {
-                                return rectangle.getBase() * rectangle.getHeight();
+                            const lettersRegexp = /[A-Za-z]+$/;
+                            
+                            export class LettersOnlyValidator implements StringValidator {
+                                isAcceptable(s: string) {
+                                    return lettersRegexp.test(s);
+                                }
                             }
-
-                            rectagnles.stream()
-                                      .map(this::calculateArea)
-                                      .collect(Collectors.toList());
-                                </code>
-                        </pre>
-                 </section>
-                         <section>
-                            <h3> lodash.js </h3>
-                                <pre>
-                                    <code class='java' data-trim>
-                                    //given
-                                    rectangles = [
-                                        {base: 3, height: 4},
-                                        {base: 4, height: 6}
-                                    ];
-
-                                    function calculateArea(rectangle) {
-                                        return rectangle.base  * rectangle.height;
-                                    }
-
-                                    _.map(rectangles, calculateArea);
-                                    </code>
-                                </pre>
-                         </section>
-                     </section>
-
-                <!-- 6 -->
-                <section>
-                    <section>
-                    <h3>java8</h3>
-                        <pre>
-                            <code class='java' data-trim>
-                            //given
-                            type = 'article';
-                            unfilteredStuffs = [
-                                {'type':'article','active':true, 'thirdParam': 'blah'},
-                                {'type':'photo','active':false, 'thirdParam': 'meh'}
-                            ];
-
-                            unfilteredStuffs.stream()
-                                            .filter(someStuff ->
-                                                type.equals(someStuff.getType) &&
-                                                    someStuff.isActive())
-                                            .collect(Collectors.toList();
-
-                            unfilteredStuffs.stream()
-                                            .filter(type::equals)
-                                            .filter(someStuff::isActive)
-                                            .collect(Collectors.toList();
                             </code>
-                        </pre>
+                            </pre>
                     </section>
                     <section>
-                    <h3>lodash.js</h3>
+                        <h3>Modules</h3>
+                        <p>example(2)</p>
                         <pre>
-                            <code class='java' data-trim>
-                            //given
-                            unfilteredStuffs = [
-                                {'type':'article','active':true, 'thirdParam': 'blah'},
-                                {'type':'photo','active':false, 'thirdParam': 'meh'}
-                            ];
-
-                            _.filter(unfilteredStuffs, function(param) {
-                                    return param.active;
+                            <code class='javascript hljs' data-trim>
+                            import { LettersOnlyValidator } from "./LettersOnlyValidator";
+                            
+                            let strings = ["Hello", "98052", "101"];
+                            
+                            let validator = new LettersOnlyValidator();
+                            
+                            strings.forEach(s => {
+                                    console.log('"${ s }" - "${validator.isAcceptable(s) ?
+                                        "matches" : "does not match"}');
+                                }
                             });
-                            _.filter(unfilteredStuffs,
-                                {'type':'article', 'thirdParam':'meh'}
-                            );
-                            _.filter(unfilteredStuffs, ['type':'article']
-                           );
-                            _.filter(unfilteredStuffs, 'active');
+
                             </code>
                         </pre>
+                    </section>
+                    <section>
+                        <h3>How to</h3>
+                        <p>modularize project(1)</p>
+                        <pre>
+                            <code class='javascript hljs' data-trim>
+                                moneyMaker
+                                ├─product
+                                |   index.ts
+                                |   order.ts
+                                |   shipping.ts
+                                |
+                                └─user
+                                    index.ts
+                                    account.ts
+                                    statistics.ts
+                            </code>
+                            <code class='javascript hljs' data-trim>
+                                const Order = require('../moneyMaker/product/order');
+                                import * as Order from '../moneyMaker/product/order';
+                            </code>
+                        </pre>
+                    </section>
+                    <section>
+                        <h3>How to</h3>
+                        <p>modularize project(2)</p>
+                        <pre>
+                            <code class='javascript hljs' data-trim>
+                                moneyMaker
+                                ├─product
+                                |   index.ts <=
+                                |   order.ts
+                                |   shipping.ts
+                                ...
+                            </code>
+                            <code class='javascript hljs' data-trim> 
+                                import * as Order from './order';
+                                import * as Shipping from './shipping';
+                                
+                                export { Order, Shipping }
+                            </code>
+                            <code class='javascript hljs' data-trim> 
+                                export * from './order';
+                                export * from './shipping';
+                            </code>
+                        </pre>
+                    </section>
+                    <section>
+                        <h3>Asynchronous pattern(1)</h3>
+                        <pre>
+                            <code class='javascript hljs' data-trim>
+                                type Callback = () => void;
+
+                                let isReady = false;
+                                let callbacks: Callback[] = [];
+
+                                setTimeout(()=> {
+                                    callbacks.forEach(callback => callback());
+                                    callbacks = undefined;
+                                    }, 100);
+
+                                export function ready(callback: Callback): void {
+                                    if(!callbacks){
+                                        callback();
+                                    } else {
+                                        callbacks.push(callback);
+                                    }
+                                }
+                            </code>
+                        </pre>
+                    </section>
+                    <section>
+                        <h3>Asynchronous pattern(2)</h3>
+                        <pre>
+                            <code class='javascript hljs' data-trim>
+                                import { ready } from './foo';
+
+                                let i = 0;
+                                ready(() => {
+                                    console.log(i);
+                                });
+
+                                i++;
+                            </code>
+                        </pre>
+                    </section>
+                    <section>
+                        <h3>Asynchronous pattern(3)</h3>
+                        <p>'FIX'</p>
+                        <pre>
+                            <code class='javascript hljs' data-trim>
+                                export function ready(callback: Callback): void {
+                                    if(!callbacks){
+                                        setImmedaite(() => callback());
+                                    } else {
+                                        callbacks.push(callback);
+                                    }
+                                }
+                            </code>
+                        </pre>
+                    </section>
+                    <section>
+                        <h3>Last one sprint to go</h3>
+                        <p>SOLID principles</p>
+                    </section>
+                    <section>
+                        <h3>SOLID principles</h3>
+                        <ul>
+                        <p>Single responsibility principle</p>
+                        <p>Open-closed principle</p>
+                        <p>Liskov substitution principle</p>
+                        <p>Interface segregation principle</p>
+                        <p>Dependency inversion principle</p>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Thanks for your attention</h3>
                     </section>
                 </section>
-
-                <!-- 7 -->
-                <section>
-                    <section>
-                    <h3>java8</h3>
-                        <pre>
-                            <code class='java' data-trim>
-                            //given
-                            unsortedContent = [
-                                {'type':'article','active':true, 'views': 20},
-                                {'type':'photo','active':false, 'views': 31},
-                                {'type':'photo','active':true, 'views': 18}
-                            ];
-
-                            unsortedContent.stream()
-                                           .sorted((c1, c2) ->
-                                                c1.getType().compareTo(c2.getType()))
-                                           .collect(Collectors.toList());
-
-                            unsortedContent.stream()
-                                           .sorted(unsortedContent::getViews)
-                                           .reversed()
-                                           .collect(Collectors.toList();
-                            </code>
-                        </pre>
-                    </section>
-                    <section>
-                    <h3>lodash.js</h3>
-                        <pre>
-                            <code class='java' data-trim>
-                            //given
-                            unsortedContent = [
-                                {'type':'article','active':true, 'views': 20},
-                                {'type':'photo','active':false, 'views': 31},
-                                {'type':'photo','active':true, 'views': 18}
-                            ];
-
-                            _.sortBy(unsortedContent, function(obj){return obj.views});
-
-                            _.sortBy(unsortedContent, ['active','views']);
-                            </code>
-                        </pre>
-                    </section>
-                </section>
-
-                <!-- 8 -->
-                <section>
-                    <section>
-                    <h3>java8</h3>
-                        <pre>
-                            <code class='java' data-trim>
-                            //given
-                            listedContent = [
-                                {'type':'article','active':true, 'id': 20},
-                                {'type':'photo','active':false, 'id': 31},
-                                {'type':'photo','active':true, 'id': 18}
-                            ];
-
-                            listedContent.stream()
-                                         .collect(
-                                             Collectors.toMap(
-                                                 content::getId, Function.identity()
-                                             ));
-
-                            listedContent.stream()
-                                         .collect(Collectors.toMap(content::getId, x->x));
-                            
-                            </code>
-                        </pre>
-                    </section>
-                    <section>
-                    <h3>lodash.js</h3>
-                        <pre>
-                            <code class='java' data-trim>
-                            //given
-                            listedContent = [
-                                {'type':'article','active':true, 'id': 20},
-                                {'type':'photo','active':false, 'id': 31},
-                                {'type':'photo','active':true, 'id': 18}
-                            ];
-
-                            _.keyBy(listedContent, function(o){o.id})
-
-                            _.keyBy(listedContent, 'id');
-                            </code>
-                        </pre>
-                    </section>
-                </section>
-
-                <!-- 9 -->
-                <section>
-                    <section>
-                    <h3>java8</h3>
-                        <pre>
-                            <code class='java' data-trim>
-                            //given
-                            ids = [1, 2, 3];
-                            
-                            Optional<> getById(Long id){
-                                    return Optional.of(db.query(id));
-                            }
-
-                            ids.stream()
-                               .map(this::getById)
-                               .filter(Optional::isPresent)
-                               .map(Optional::get)
-                               .collect(Collectors.toList());
-                            </code>
-                        </pre>
-                    </section>
-                    <section>
-                    <h3>lodash.js</h3>
-                        <pre>
-                            <code class='java' data-trim>
-                            //given
-                            ids = [1, 2, 3];
-                            
-                            getById = function(id){
-                                    return db.query(id);
-                            }
-
-                            _.filter(_.map(ids, getById), _.identity(value))
-                            </code>
-                        </pre>
-                    </section>
-                </section>
-
-                <!-- 10 -->
-                <section>
-                    <section>
-                    <h3>java8</h3>
-                        <pre>
-                            <code class='java' data-trim>
-                            //given
-                            ids = [1, 2, 3, 2, 1, 4, 6];
-                            
-                            Optional<> getById(Long id){
-                                    return Optional.of(db.query(id));
-                            }
-
-                            ids.stream()
-                               .distinct()
-                               .map(this::getById)
-                               .filter(Optional::isPresent)
-                               .map(Optional::get)
-                               .collect(Collectors.toList());
-                            </code>
-                        </pre>
-                    </section>
-                    <section>
-                    <h3>lodash.js</h3>
-                        <pre>
-                            <code class='java' data-trim>
-                            //given
-                            ids = [1, 2, 3, 2, 1, 4, 6];
-                            
-                            getById = function(id){
-                                    return db.query(id);
-                            }
-
-                            _.chain(ids)
-                             .uniq()
-                             .map(getById)
-                             .filter(_.identity())
-                             .value()
-                            </code>
-                        </pre>
-                    </section>
-                </section>
-
-                <!-- 11 -->
-                <section>
-                <h2>ale na co to komu?</h2>
-                </section>
-
-                <!-- 12 -->
-                <section>
-                <h2>to wsio!</h2>
-                dzięki
-                </section>
-
             </div>
         </div>
         <script src='lib/js/head.min.js'></script>
